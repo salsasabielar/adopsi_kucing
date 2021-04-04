@@ -1,8 +1,20 @@
 //kode utama Aplikasi tampilan awal
+import 'package:adopsi_kucing/entryCustomer.dart';
+import 'package:adopsi_kucing/model/customer.dart';
 import 'package:flutter/material.dart';
 import 'home.dart'; //package letak folder Anda
 
-void main() => runApp(MyApp());
+void main() {
+  Customer customer;
+  runApp(MaterialApp(
+    //mendefinisikan route
+    initialRoute: '/',
+    routes: {
+      '/': (context) => Home(),
+      '/customer': (context) => EntryFormCustomer(customer),
+    },
+  ));
+}
 
 class MyApp extends StatelessWidget {
   @override

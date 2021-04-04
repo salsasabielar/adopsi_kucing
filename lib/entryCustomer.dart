@@ -1,79 +1,41 @@
 import 'package:flutter/material.dart';
 
-import 'model/item.dart';
+import 'model/customer.dart';
 
-class EntryForm extends StatefulWidget {
-  final Item item;
-  EntryForm(this.item);
+class EntryFormCustomer extends StatefulWidget {
+  final Customer customer;
+  EntryFormCustomer(this.customer);
 
   @override
-  EntryFormState createState() => EntryFormState(this.item);
+  EntryFormCustomerState createState() => EntryFormCustomerState(this.customer);
 }
 
 //class controller
-class EntryFormState extends State<EntryForm> {
-  Item item;
-  EntryFormState(this.item);
+class EntryFormCustomerState extends State<EntryFormCustomer> {
+  Customer customer;
+  EntryFormCustomerState(this.customer);
   TextEditingController nameController = TextEditingController();
-  TextEditingController kodeController = TextEditingController();
-  TextEditingController jenisKelaminController = TextEditingController();
-  TextEditingController rasController = TextEditingController();
+  TextEditingController alamatController = TextEditingController();
+  TextEditingController telpController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     //kondisi
-    if (item != null) {
-      kodeController.text = item.kode;
-      rasController.text = item.ras;
-      nameController.text = item.name;
-      jenisKelaminController.text = item.jenisKelamin;
+    if (customer != null) {
+      nameController.text = customer.name;
+      alamatController.text = customer.alamat;
+      telpController.text = customer.telp;
     }
     //rubah
     return Scaffold(
         appBar: AppBar(
-          title: item == null ? Text('Tambah') : Text('Ubah'),
+          title: customer == null ? Text('Tambah') : Text('Ubah'),
           leading: Icon(Icons.keyboard_arrow_left),
         ),
         body: Padding(
           padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
           child: ListView(
             children: <Widget>[
-              // Kode Kucing
-              Padding(
-                padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                child: TextField(
-                  controller: kodeController,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    labelText: 'Kode Kucing',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    //
-                  },
-                ),
-              ),
-
-              // ras
-              Padding(
-                padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                child: TextField(
-                  controller: rasController,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    labelText: 'Ras',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    //
-                  },
-                ),
-              ),
-
               // nama
               Padding(
                 padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
@@ -81,7 +43,7 @@ class EntryFormState extends State<EntryForm> {
                   controller: nameController,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    labelText: 'Nama Kucing',
+                    labelText: 'Nama Adopter',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -92,14 +54,32 @@ class EntryFormState extends State<EntryForm> {
                 ),
               ),
 
-              // jenis kelamin
+              // alamat
               Padding(
                 padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
                 child: TextField(
-                  controller: jenisKelaminController,
+                  controller: alamatController,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    labelText: 'Jenis Kelamin',
+                    labelText: 'Alamat Rumah',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  onChanged: (value) {
+                    //
+                  },
+                ),
+              ),
+
+              // telepon
+              Padding(
+                padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                child: TextField(
+                  controller: telpController,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelText: 'Nomor Telepon',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -125,22 +105,18 @@ class EntryFormState extends State<EntryForm> {
                           textScaleFactor: 1.5,
                         ),
                         onPressed: () {
-                          if (item == null) {
+                          if (customer == null) {
                             // tambah data
-                            item = Item(
-                                kodeController.text,
-                                rasController.text,
-                                nameController.text,
-                                jenisKelaminController.text);
+                            customer = Customer(nameController.text,
+                                alamatController.text, telpController.text);
                           } else {
                             // ubah data
-                            item.kode = kodeController.text;
-                            item.ras = rasController.text;
-                            item.name = nameController.text;
-                            item.jenisKelamin = jenisKelaminController.text;
+                            customer.name = nameController.text;
+                            customer.alamat = alamatController.text;
+                            customer.telp = telpController.text;
                           }
-                          // kembali ke layar sebelumnya dengan membawa objek item
-                          Navigator.pop(context, item);
+                          // kembali ke layar sebelumnya dengan membawa objek customer
+                          Navigator.pop(context, customer);
                         },
                       ),
                     ),
@@ -157,31 +133,9 @@ class EntryFormState extends State<EntryForm> {
                           textScaleFactor: 1.5,
                         ),
                         onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      width: 5.0,
-                    ),
-                    // tombol Adopsi
-                    Expanded(
-                      child: RaisedButton(
-                        color: Theme.of(context).primaryColorDark,
-                        textColor: Theme.of(context).primaryColorLight,
-                        child: Text(
-                          'Adopsi',
-                          textScaleFactor: 1.5,
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context, "/customer");
+                          Navigator.pop(
+                            context,
+                          );
                         },
                       ),
                     ),
